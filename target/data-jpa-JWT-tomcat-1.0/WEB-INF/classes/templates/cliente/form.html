@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layouts/layout :: head">
+</head>
+<body>
+
+	<header th:replace="layouts/layout :: header "></header>
+
+	<main >
+		<div id="formulario" class="container bg-light p-2">
+			<h3  class="text-center"><i class="bi bi-people"></i> 
+			<span th:text="${titulo}"></span> </h3>
+
+			<div th:object="${cliente}" th:remove="tag">
+				<ul th:if="${#fields.hasErrors('*')}" class="alert alert-danger">
+					<li th:each="err: ${#fields.errors('*')}" th:text="${err}"></li>
+				</ul>
+			</div>
+
+			<form class="form-group" th:action="@{/form}" method="post"
+				th:object=${cliente} enctype="multipart/form-data">
+
+				<input type="hidden" name="id" th:value="${cliente.id}" />
+
+				<div class="mb-3">
+					<label for="nombre" class="form-label" th:text="#{text.cliente.nombre}">Nombre: </label> <input
+						name="nombre" type="text" class="form-control" id="nombre"
+						th:value="${cliente.nombre}"
+						th:errorClass="'border border-danger'">
+					<p class="form-text text-danger"
+						th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></p>
+				</div>
+
+				<div class="mb-3">
+					<label for="apellido" class="form-label" th:text="#{text.cliente.apellido}">Apellido: </label> <input
+						type="text" name="apellido" class="form-control" id="apellido"
+						th:value="${cliente.apellido}"
+						th:errorClass="'border border-danger'">
+					<p class="form-text text-danger"
+						th:if="${#fields.hasErrors('apellido')}" th:errors="*{apellido}"></p>
+				</div>
+
+				<div class="mb-3">
+					<label for="email" class="form-label" th:text="#{text.cliente.email}">Email: </label> <input
+						type="email" name="email" class="form-control" id="email"
+						th:value="${cliente.email}" th:errorClass="'border border-danger'">
+					<p class="form-text text-danger"
+						th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
+				</div>
+
+				<div class="mb-3">
+					<label for="createAt" class="form-label" th:text="#{text.cliente.createAt}">Fecha ingreso: </label> <input
+						type="date" name="createAt" class="form-control" id="createAt"
+						th:errorClass="'border border-danger'"
+						th:value="${#dates.format(cliente.createAt, 'yyyy-MM-dd')}">
+					<p class="form-text text-danger"
+						th:if="${#fields.hasErrors('createAt')}" th:errors="*{createAt}"></p>
+				</div>
+				
+				<div class="mb-3">
+					<label for="file" class="form-label" th:text="#{text.cliente.fotografia}">Fotografia: </label> 
+					<input type="file" name="file"  class="form-control"/>
+				</div>
+				
+				
+				<div class="mb-3 text-center">
+					<button type="submit" class="btn btn-primary btn-lg ">
+						<i class="bi bi-box-arrow-down"></i> <span th:text="#{text.cliente.guardar}">Guardar</span>
+					</button>
+				</div>
+
+			</form>
+
+		</div>
+	</main>
+	<footer th:replace="layouts/layout :: footer"></footer>
+
+</body>
+</html>

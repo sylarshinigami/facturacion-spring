@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+</head>
+
+<body>
+	<nav th:fragment="paginator">
+		<ul class="pagination">
+			<li th:class="${page.first? 'page-item disabled' : 'page-item'}">
+				<span class="page-link"
+					th:if="${page.first}" th:text="#{text.paginacion.primera}">Primera</span> 
+					<a th:if="${not page.first}" th:href="@{${page.url}(page=0)}"
+					class="page-link" th:text="#{text.paginacion.primera}">Primera</a>
+			</li>
+
+
+			<li th:class="${not page.hasPrevious? 'page-item disabled' : 'page-item'}">
+				<span class="page-link"
+					th:if="${ not page.hasPrevious}">
+					<i class="bi bi-caret-left-fill"></i>
+				</span> 
+					<a th:if="${page.hasPrevious}"
+					th:href="@{${page.url}(page=${page.paginaActual-2})}" class="page-link">
+					<i class="bi bi-caret-left-fill"></i>
+				</a>
+			</li>
+
+
+			<li th:each="item : ${page.paginas}" th:class="${item.actual? 'page-item active' : 'page-item'}">
+				<span class="page-link" th:if="${item.actual}" th:text="${item.numero}"></span>
+				<a class="page-link" th:if="${not item.actual}" th:href="@{${page.url}(page= ${item.numero - 1})}"
+					th:text="${item.numero}"></a>
+			</li>
+
+
+			<li th:class="${ not page.hasNext? 'page-item disabled' : 'page-item'}"><span class="page-link"
+					th:if="${ not page.hasNext}"><i class="bi bi-caret-right-fill"></i></span> <a th:if="${page.hasNext}" class="page-link"
+					th:href="@{${page.url}(page=${page.paginaActual})}"><i class="bi bi-caret-right-fill"></i></a></li>
+
+
+			<li th:class="${page.last? 'page-item disabled' : 'page-item'}"><span class="page-link"
+					th:if="${page.last}" th:text="#{text.paginacion.ultima}">Ultima</span>
+				<a th:if="${not page.last}" class="page-link"
+					th:href="@{${page.url}(page=${page.totalPaginas - 1})}" th:text="#{text.paginacion.ultima}">Ultima</a>
+			</li>
+		</ul>
+
+	</nav>
+</body>
+
+</html>

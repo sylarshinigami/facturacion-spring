@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="layouts/layout :: head">
+    <title th:text="${titulo}"></title>
+</head>
+
+<body>
+    <header th:replace="layouts/layout :: header"></header>
+
+    <main>
+        <div class="container py-40">
+            <div class="card bg-light" id="detalle-factura">
+                <div class="card-header" th:text="${titulo}"></div>
+                <div class="card-body">
+                    <div class="card-title d-flex justify-content-between">
+                        <a th:href="@{'/ver/' + ${factura.cliente.id}}" class="btn btn-secondary btn-xs" th:text="#{text.facturacion.volver}">Volver</a>
+                        <div>
+                        <span th:text="#{text.facturacion.guardarComo}" class="fw-bold me-4 "></span>
+						<a th:href="@{'/factura/ver/' + ${factura.cliente.id}(format=pdf)} " class="btn btn-danger btn-xs me-2">PDF</a>
+						<a th:href="@{'/factura/ver/' + ${factura.cliente.id}(format=xlsx)}" class="btn btn-success btn-xs me-2">EXCEL</a>
+						
+                        </div>
+                    </div>
+
+                    <ul class="list-group my-4">
+                        <li th:text="#{text.facturacion.datosCliente}" class="list-group-item list-group-item-primary"></li>
+                        <li class="list-group-item" th:text=" #{text.cliente.nombre} + ': ' +
+                                ${factura.cliente}"></li>
+                        <li class="list-group-item" th:text="#{text.cliente.email} +': ' +
+                                ${factura.cliente.email}"></li>
+                    </ul>
+
+                    <ul class="list-group my-4">
+                        <li th:text="#{text.facturacion.datosFactura}"  class="list-group-item list-group-item-success"></li>
+                        <li class="list-group-item" th:text="#{text.facturacion.folio} + ': ' +
+                                ${factura.id}"></li>
+                        <li class="list-group-item" th:text="#{text.facturacion.descripcion} + ': '   
+                                + ${factura.Descripcion}"></li>
+                        <li class="list-group-item" th:text="#{text.facturacion.createAt} + ': ' +  
+                                ${factura.createAt}"></li>
+                    </ul>
+                    <div th:if="${#lists.isEmpty(factura.items)}" th:text="#{text.facturacion.noLinea}+ ' ' +
+                            ${factura.descripcion}" class="alert alert-danger"></div>
+                    <table th:if="${not #lists.isEmpty(factura.items)}" class="table table-striped table-hover
+                            table-bordered text-center">
+                        <thead>
+                            <tr>
+                                <th th:text="#{text.facturacion.producto}">Producto</th>
+                                <th th:text="#{text.facturacion.precio}">Precio</th>
+                                <th th:text="#{text.facturacion.cantidad}">Cantidad</th>
+                                <th th:text="#{text.facturacion.total}">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="linea: ${factura.items}">
+                                <td th:text="${linea.producto.nombre}"></td>
+                                <td th:text="${linea.producto.precio}"></td>
+                                <td th:text="${linea.cantidad}"></td>
+                                <td th:text="${linea.CalcularImporte}"></td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr class="text-right">
+                                <td colspan="4">
+                                    <h4 class="">
+                                        <span class="badge bg-danger" th:text="#{text.facturacion.total} + ': ' +
+                                                ${factura.total}"></span>
+                                    </h4>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                    <div class="card border-inf mb-4" style="max-width:
+                            20rem">
+                        <div class="card-header" th:text="#{text.facturacion.observaciones}">Observaciones</div>
+                        <div class="card-body">
+                            <p class="card-text" th:text="${factura.observacion}" th:if="${not
+                                    #strings.isEmpty(factura.observacion)}"></p>
+                            <h4 th:if="${#strings.isEmpty(factura.observacion)}" class="card-title" th:text="#{text.facturacion.noObservaciones}">
+                                No tiene observaciones
+                            </h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer th:replace="layouts/layout :: footer"></footer>
+</body>
+
+</html>

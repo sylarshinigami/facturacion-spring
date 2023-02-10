@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="layouts/layout :: head">
+
+</head>
+<body>
+	<header th:replace="layouts/layout :: header "></header>
+	<main class="my-4">
+		<div class="row d-flex justify-content-center my-3 mx-0">
+			<div class="col-md-8">
+				<div class="card bg-light">
+					<div class="card-header d-flex justify-content-between">
+						<h1 th:text="${titulo}" class="text-center"></h1>
+						<div>
+							<a	th:href="@{'/listar'(format=json)}" class="btn btn-outline-warning btn-xs me-2">JSON</a>
+						<a	th:href="@{'/listar'(format=xml)}" class="btn btn-outline-success btn-xs me-2">XML</a>
+						<a	th:href="@{'/listar'(format=csv)}" class="btn btn-success btn-xs me-2">CSV</a></div>
+					</div>
+					<div class="card-body" id="tabla">
+						<table class="table table-ligth table-striped-columns text-center">
+							<thead>
+								<tr>
+									<th sec:authorize="hasRole('ROLE_USER')">ID</th>
+									<th th:text="#{text.cliente.nombre}">Nombre</th>
+									<th th:text="#{text.cliente.apellido}">Apellidio</th>
+									<th th:text="#{text.cliente.email}">Email</th>
+									<th th:text="#{text.cliente.createAt}">Fecha</th>
+									<th sec:authorize="hasRole('ROLE_ADMIN')"
+										th:text="#{text.cliente.facturacion}">Facturacion</th>
+									<th sec:authorize="hasRole('ROLE_ADMIN')"
+										th:text="#{text.cliente.opciones}">Opciones</th>
+
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="cliente: ${clientes}">
+									<td sec:authorize="hasRole('ROLE_USER')"><a
+										th:href="@{/ver/} + ${cliente.id}" th:text="${cliente.id}"
+										class="btn btn-primary btn-xs"></a></td>
+									<td th:text="${cliente.nombre}"></td>
+									<td th:text="${cliente.apellido}"></td>
+									<td th:text="${cliente.email}"></td>
+									<td th:text="${cliente.createAt}"></td>
+									<td sec:authorize="hasRole('ROLE_ADMIN')"><a
+										th:href="@{'/factura/form/' + ${cliente.id}}"
+										class="btn btn-success btn-xs"><i class="bi bi-cash-coin"></i>
+											<span th:text="#{text.cliente.crearFactura}">Crear
+												factura</span></a></td>
+									<td sec:authorize="hasRole('ROLE_ADMIN')"><a
+										class="mx-3 btn btn-primary btn-xs "
+										th:href="@{/form/} + ${cliente.id}"><i
+											class="bi bi-pencil-square"></i></a><a
+										class="btn btn-danger btn-xs"
+										th:href="@{/eliminar/} + ${cliente.id}"
+										onclick="return confirm('Seguro de eliminar?')"><i
+											class="bi bi-person-x-fill"></i></a></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+
+					<nav th:replace="layouts/paginatorNav :: paginator"></nav>
+				</div>
+			</div>
+		</div>
+	</main>
+	<footer th:replace="layouts/layout :: footer"></footer>
+</body>
+</html>

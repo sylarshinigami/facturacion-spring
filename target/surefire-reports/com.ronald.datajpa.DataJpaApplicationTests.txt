@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.ronald.datajpa.DataJpaApplicationTests
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.579 s - in com.ronald.datajpa.DataJpaApplicationTests

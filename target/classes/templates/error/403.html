@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Ocurrio un Error</title>
+</head>
+<link rel="stylesheet" href="/css/errores.css" />
+
+<body>
+
+	<div>
+		<h1>HA OCURRIDO UN ERROR.</h1>
+		<img src="/error.png" alt="error" />
+		
+		<p>Vaya algo salio mal!</p>
+		<p th:text="${error}"></p>
+		<p th:text="${message}"></p>
+		<p th:text="${status}"></p>
+		<p th:text="${timestap}"></p>
+	</div>
+
+</body>
+</html>
